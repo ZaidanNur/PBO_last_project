@@ -11,6 +11,7 @@ public class BukuModel extends BaseModel{
 
     final String INSERT_DATA_BUKU = "INSERT INTO buku" + " (buku,tahun_terbit,penerbit,pengarang,genre,status_pinjam) VALUES " + " (?, ?,?,?,?,0);";
     final String SHOW_ALL_BUKU = "select * from buku order by id_buku asc";
+    final String GET_BUKU = "select * from buku where id_buku = ?";
     final String EDIT_NAMA_BUKU = "update buku set buku = ? where id_buku = ?;";
     final String EDIT_TAHUN_BUKU = "update buku set tahun_terbit = ? where id_buku = ?;";
     final String EDIT_PENERBIT_BUKU = "update buku set penerbit = ? where id_buku = ?;";
@@ -20,6 +21,19 @@ public class BukuModel extends BaseModel{
     final String DELETE_BUKU = "delete from buku where id_buku =?;";
     public BukuModel() throws SQLException {
         super();
+    }
+
+    public int getStatusPinjam(int id) throws SQLException {
+        int status = 0;
+        PreparedStatement preparedStatement = connection.prepareStatement(this.GET_BUKU);
+        preparedStatement.setInt(1,id);
+
+        ResultSet rs = preparedStatement.executeQuery();
+        while(rs.next()){
+            status = rs.getInt("status_pinjam");
+
+        }
+        return  status;
     }
 
     public void updatePeminjaman(int status,int id_buku) throws SQLException {
